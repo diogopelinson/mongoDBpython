@@ -1,5 +1,6 @@
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.minhaCollection_repository import MinhaCollectionRepository
+from datetime import datetime
 
 db_handle = DBConnectionHandler()
 db_handle.connect_to_db()
@@ -41,4 +42,9 @@ response2 = minha_collection_repository.select_one({ "name": "Dozo" })
 
 # minha_collection_repository.delete_registry()
 
-minha_collection_repository.delete_one_registry()
+# minha_collection_repository.delete_one_registry()
+
+# minha_collection_repository.create_index_ttl()
+documento = { "nome": "Arnaldo", "idade": 35, "data_de_criacao": datetime.now() }
+
+minha_collection_repository.insert_document(documento)

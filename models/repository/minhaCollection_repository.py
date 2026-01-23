@@ -1,5 +1,6 @@
 from bson.objectid import ObjectId #Json binario
 from typing import Dict, List
+from datetime import timedelta
 
 class MinhaCollectionRepository:
     def __init__(self, db_connection) -> None:
@@ -98,3 +99,8 @@ class MinhaCollectionRepository:
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.delete_one( { "_id": ObjectId("6973cd6e89065bacae045c60") } ) 
         print(data.deleted_count)
+
+    def create_index_ttl(self): #Time to Live
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        tempo_de_vida = timedelta(seconds=10)
+        collection.create_index("data_de_criacao", expireAfterSeconds=tempo_de_vida.seconds)
