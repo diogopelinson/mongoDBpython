@@ -1,19 +1,25 @@
 from models.connection_options.connection import DBConnectionHandler
+from models.repository.minhaCollection_repository import MinhaCollectionRepository
 
 db_handle = DBConnectionHandler()
-conn1 = db_handle.get_db_connection()
-print(conn1)    #None
-
-print("---------------------------------------")
-
 db_handle.connect_to_db()
-conn2 = db_handle.get_db_connection()
-print(conn2)    # Alguma coisa que não é None
+db_connection = db_handle.get_db_connection()
 
-collection = conn2.get_collection("minhaCollection")
+minha_collection_repository = MinhaCollectionRepository(db_connection)
 
+response = minha_collection_repository.select_many({ "name": "Dozo", "pedidos.pizza": 1 })
 
-collection.insert_one( { 
-    "Legal": "Sim",
-    "Numeros_da_sorte": [123, 124, 567]
- } )
+# print(response)
+print()
+
+response2 = minha_collection_repository.select_one({ "name": "Dozo" })
+
+# print(response2)
+
+# minha_collection_repository.select_if_property_exists()
+
+# minha_collection_repository.select_many_order()
+
+# minha_collection_repository.select_or()
+
+minha_collection_repository.select_by_object_id()
