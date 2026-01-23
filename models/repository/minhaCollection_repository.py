@@ -6,6 +6,8 @@ class MinhaCollectionRepository:
         self.__collection_name = "minhaCollection"
         self.__db_connection = db_connection
 
+
+    #Metodos
     def insert_document(self, document: Dict) -> Dict:
         collection = self.__db_connection.get_collection(self.__collection_name)
         collection.insert_one(document)
@@ -62,3 +64,37 @@ class MinhaCollectionRepository:
         data = collection.find({ "_id": ObjectId("69727c0cbeadd9537c8dfc6a") })
         for elemento in data:
             print(elemento)
+
+    def edit_registry(self, idade) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        data = collection.update_one(
+            { "_id": ObjectId("6973cd5189065bacae045c5e") },  #Filtro
+            { "$set": { "idade": idade } } # Campo de edição
+        )   
+        print(data.modified_count)
+
+    def edit_many_registrys(self, filtro, propriedades) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        data = collection.update_many(
+            filtro,  #Filtro
+            { "$set": propriedades }
+        )   
+        print(data.modified_count)
+
+    def edit_many_increment(self, num) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        data = collection.update_many(
+            { "_id": ObjectId("6973cd5189065bacae045c5e") },  #Filtro
+            { "$inc": { "idade": num } } #Incrementador $inc
+        )   
+        print(data.modified_count)
+
+    def delete_many_registry(self) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        data = collection.delete_many( { "profissao": "Programador" })
+        print(data.deleted_count)
+
+    def delete_one_registry(self) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        data = collection.delete_one( { "_id": ObjectId("6973cd6e89065bacae045c60") } ) 
+        print(data.deleted_count)
